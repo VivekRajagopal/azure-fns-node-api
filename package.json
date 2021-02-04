@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@azure/cosmos": "^3.9.5",
-    "ajv": "^7.0.4",
     "ajv-formats": "^1.5.1",
+    "fp-ts": "^2.9.5",
+    "io-ts": "^2.2.14",
+    "io-ts-reporters": "^1.2.2",
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
