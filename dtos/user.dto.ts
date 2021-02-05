@@ -1,18 +1,9 @@
-import { either, mapLeft } from "fp-ts/lib/Either";
+import { Either, mapLeft } from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
 import * as t from "io-ts";
 import { formatValidationErrors } from "io-ts-reporters";
-
-const DateFromString = new t.Type<Date, string, unknown>(
-  "DateFromString",
-  (u): u is Date => u instanceof Date,
-  (u, c) =>
-    either.chain(t.string.validate(u, c), s => {
-      const d = new Date(s);
-      return isNaN(d.getTime()) ? t.failure(u, c) : t.success(d);
-    }),
-  a => a.toISOString()
-);
+import { DateFromString } from "../util/fp/io-ts.util";
+import { User } from "./user.model";
 
 const TName = t.type({
   firstName: t.string,
@@ -32,8 +23,6 @@ const TUser = t.type({
   dateOfBirth: DateFromString
 });
 
-export type User = t.TypeOf<typeof TUser>;
-
-export const validateUser = (value: unknown) => {
+export const validateUser = (value: unknown): Either<string[], User> => {
   return pipe(value, TUser.decode, mapLeft(formatValidationErrors));
 };
