@@ -17,12 +17,18 @@ const TName = t.type({
   ])
 });
 
-const TUser = t.type({
-  id: t.string,
-  name: TName,
-  dateOfBirth: DateFromString
-});
+const TUser = pipe(
+  t.type({
+    name: TName,
+    dateOfBirth: DateFromString
+  }),
+  t.exact
+);
 
-export const validateUser = (value: unknown): Either<string[], User> => {
+export type UserCreateRequest = t.TypeOf<typeof TUser>;
+
+export const validateUser = (
+  value: unknown
+): Either<string[], UserCreateRequest> => {
   return pipe(value, TUser.decode, mapLeft(formatValidationErrors));
 };
