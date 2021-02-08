@@ -1,19 +1,22 @@
 import { HttpRequestHeaders } from "@azure/functions";
+import * as O from "fp-ts/lib/Option";
 import jwt_decode from "jwt-decode";
 
 type RequestHeaders = {
-  authorization?: string | undefined;
+  authorization?: string | undefined; // Azure Functions
 } & HttpRequestHeaders;
 
 export type JwtClaims = {};
 
-export const getBearerTokenFromHeaders = ({ authorization }: RequestHeaders) => {
+export const getBearerTokenFromHeaders = ({
+  authorization
+}: RequestHeaders) => {
   if (!authorization) {
-    return;
+    return O.none;
   }
 
   const [_, token] = authorization.split(" ");
-  return token as string | undefined;
+  return O.some(token);
 };
 
 export const getJwtClaims = (token: string) => {

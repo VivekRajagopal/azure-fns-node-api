@@ -3,7 +3,6 @@ import { pipe } from "fp-ts/lib/function";
 import * as t from "io-ts";
 import { formatValidationErrors } from "io-ts-reporters";
 import { DateFromString } from "../util/fp/io-ts.util";
-import { User } from "./user.model";
 
 const TName = t.type({
   firstName: t.string,

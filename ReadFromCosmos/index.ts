@@ -1,42 +1,28 @@
 import {
   AzureFunction,
-  Context,
   HttpRequest,
-  Response
+  Response,
+  TypedContext
 } from "@azure/functions";
-import { fold } from "fp-ts/lib/Option";
+import * as O from "fp-ts/lib/Option";
 import { User } from "../dtos/user.model";
-import { getDocument } from "../persistence/cosmos.service";
+import usersCollection from "../services/cosmos/users-collection";
+import {
+  notFound,
+  okObject
+} from "../util/function-response/functions-response.util";
 
 const httpTrigger: AzureFunction = async function (
-  context: Context,
+  context: TypedContext<{ docId: string }>,
   req: HttpRequest
 ): Promise<void> {
-  const docId = context.bindingData.docId as string | undefined;
+  const { docId } = context.bindingData;
 
-  if (true) {
-    context.res = {
-      status: 404
-    };
+  const user = await usersCollection.getDocument<User>(docId);
 
-    return;
-  }
+  const result: Response = O.fold(notFound, okObject)(user);
 
-  //   const user = await getDocument<User>(docId, "Users");
-
-  //   const result: Response["res"] = fold(
-  //     () => ({
-  //       status: 404
-  //     }),
-  //     user => ({
-  //       status: 200,
-  //       body: user
-  //     })
-  //   )(user);
-
-  //   console.log(result);
-
-  //   context.res = result;
+  context.res = result;
 };
 
 export default httpTrigger;
