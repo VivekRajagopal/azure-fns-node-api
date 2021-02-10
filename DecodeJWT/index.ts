@@ -5,22 +5,25 @@ import { getJwtClaims, getBearerTokenFromHeaders } from "./authorization";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  req: HttpRequest,
+  customBinding: string
 ): Promise<void> {
-  const jwtClaims = pipe(
-    req.headers,
-    getBearerTokenFromHeaders,
-    O.chainNullableK(getJwtClaims),
-    O.toUndefined
-  );
+  context.res = { yeeto: "cheeto" };
 
-  context.res = {
-    status: 200,
-    body: jwtClaims,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+  // const jwtClaims = pipe(
+  //   req.headers,
+  //   getBearerTokenFromHeaders,
+  //   O.chainNullableK(getJwtClaims),
+  //   O.toUndefined
+  // );
+
+  // context.res = {
+  //   status: 200,
+  //   body: jwtClaims,
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   }
+  // };
 };
 
 export default httpTrigger;
