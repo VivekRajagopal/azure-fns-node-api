@@ -1,4 +1,4 @@
-import cosmosService from "./cosmos.service";
+import cosmosService from "../../host-services/cosmos/cosmos.service";
 
 export const UsersPartitionKeyName = "Users";
 

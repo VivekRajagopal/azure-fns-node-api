@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && dotnet build ./CustomExtensions/extensions.csproj -c Release -o ./bin",
     "watch": "tsc -w",
     "prestart": "npm run build",
     "start": "func start --verbose",
@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "@azure/cosmos": "^3.9.5",
-    "ajv-formats": "^1.5.1",
     "applicationinsights": "^1.8.9",
     "fp-ts": "^2.9.5",
     "io-ts": "^2.2.14",
     "io-ts-reporters": "^1.2.2",
-    "jwt-decode": "^3.1.2",
     "node-fetch": "^2.6.1",
     "wretch": "^1.7.4"
   },

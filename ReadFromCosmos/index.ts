@@ -5,8 +5,8 @@ import {
   TypedContext
 } from "@azure/functions";
 import * as O from "fp-ts/lib/Option";
-import { User } from "../dtos/user.model";
-import usersCollection from "../services/cosmos/users-collection";
+import { User } from "../services/users/user.model";
+import usersCollection from "../services/users/users-collection";
 import {
   notFound,
   okObject

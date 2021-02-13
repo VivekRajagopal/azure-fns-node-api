@@ -13,7 +13,7 @@
       "type": "validateJwt",
       "direction": "in",
       "name": "customExtensionInput",
-      "testInput": "HelloWorld"
+      "identityAuthorityUrl": "%IdentityAuthorityUrl%"
     },
     {
       "type": "http",

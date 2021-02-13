@@ -4,9 +4,9 @@ import { flow, pipe } from "fp-ts/lib/function";
 import {
   UserCreateRequest,
   validateUser
-} from "../dtos/user-create-request.dto";
-import { User } from "../dtos/user.model";
-import usersCollection from "../services/cosmos/users-collection";
+} from "./dtos/user-create-request.dto";
+import { User } from "../services/users/user.model";
+import usersCollection from "../services/users/users-collection";
 import {
   badRequest,
   okObject

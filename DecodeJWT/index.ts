@@ -1,29 +1,26 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import * as O from "fp-ts/lib/Option";
-import { pipe } from "fp-ts/lib/pipeable";
-import { getJwtClaims, getBearerTokenFromHeaders } from "./authorization";
+import { ValidateJwt } from "./validate-jwt.dto";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
-  customBinding: string
+  decodedJwt: ValidateJwt
 ): Promise<void> {
-  context.res = { yeeto: "cheeto" };
+  if (!decodedJwt.isValid) {
+    context.res = {
+      status: 400,
+      body: "Invalid Bearer Token"
+    };
+  } else {
+    context.res = {
+      status: 200,
+      body: decodedJwt.token.payload
+    };
+  }
 
-  // const jwtClaims = pipe(
-  //   req.headers,
-  //   getBearerTokenFromHeaders,
-  //   O.chainNullableK(getJwtClaims),
-  //   O.toUndefined
-  // );
-
-  // context.res = {
-  //   status: 200,
-  //   body: jwtClaims,
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   }
-  // };
+  context.res.headers = {
+    "content-type": "application/json"
+  };
 };
 
 export default httpTrigger;

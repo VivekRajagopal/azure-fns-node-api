@@ -2,7 +2,7 @@ import { Either, mapLeft } from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
 import * as t from "io-ts";
 import { formatValidationErrors } from "io-ts-reporters";
-import { DateFromString } from "../util/fp/io-ts.util";
+import { DateFromString } from "../../util/fp/io-ts.util";
 
 const TName = t.type({
   firstName: t.string,

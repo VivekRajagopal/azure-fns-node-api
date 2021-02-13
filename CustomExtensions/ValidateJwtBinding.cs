@@ -1,11 +1,14 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Description;
-using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Host.Config;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace CustomExtensions {
     [Extension(nameof(ValidateJwtBinding))]
@@ -20,24 +23,36 @@ namespace CustomExtensions {
 
         public void Initialize(ExtensionConfigContext context)
         {
-            context
-                .AddBindingRule<ValidateJwtAttribute>()
-                .BindToInput(
-                    new Func<ValidateJwtAttribute, string>(
-                        (attr) =>
-                        {
-                            // var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
-                            // var authorization = httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var binding = context.AddBindingRule<ValidateJwtAttribute>();
+            
+            binding.BindToInput(BuildItemFromAttr);
 
-                            // if (authorization == StringValues.Empty) {
-                            //     return null;
-                            // } else {
-                            //     var authorizationParts = authorization.ToString().Split(" ");
-                            //     return (authorizationParts.Length == 2) ? authorizationParts[1] : null;
-                            // }
-                            // throw new Exception(">>>> " + attr.Argument);
-                            return "HelloWorld >>> " + attr.TestInput;
-                        }));
+            var serializer = new JsonSerializer()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            binding.AddConverter<TokenValidationResult, JObject>(value => JObject.FromObject(value, serializer));
         }
+
+        private TokenValidationResult BuildItemFromAttr(ValidateJwtAttribute attribute) {
+            var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+            var tokenValidationResult = ValidateTokenAsync(httpContextAccessor.HttpContext.Request.GetAuthBearerToken(), attribute.IdentityAuthorityUrl);
+            return tokenValidationResult;
+        }
+
+        private TokenValidationResult ValidateTokenAsync(string token, string identityAuthorityUrl) {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return TokenValidationResult.Invalid();
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try {
+                return TokenValidationResult.Valid(tokenHandler.ReadJwtToken(token));
+            } catch (Exception exception) {
+                return TokenValidationResult.Invalid();
+            }
+        }
+    
     }
   }

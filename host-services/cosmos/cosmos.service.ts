@@ -75,46 +75,4 @@ const cosmosService = (partitionKey: string) => {
   };
 };
 
-// export const getDocument = async <T>(id: string, partitionKey: string) => {
-//   const querySpec: SqlQuerySpec = {
-//     query: "SELECT * FROM Users U WHERE U.id = @id",
-//     parameters: [
-//       {
-//         name: "@id",
-//         value: id
-//       }
-//     ]
-//   };
-
-//   const resourceResponse = await container.items
-//     .query<T>(querySpec, {
-//       partitionKey
-//     })
-//     .fetchAll();
-
-//   return pipe(
-//     resourceResponse.resources[0],
-//     O.fromNullable,
-//     O.chainNullableK(stripResourceProps)
-//   );
-// };
-
-// export const createDocument = async <T>(item: any, partitionKey: string) => {
-//   const resourceResponse = await container.items.create<T>(
-//     { ...item, partitionKey },
-//     { disableAutomaticIdGeneration: false }
-//   );
-
-//   return {
-//     statusCode: resourceResponse.statusCode,
-//     isSuccessful: resourceResponse.statusCode === 201,
-//     etag: resourceResponse.etag,
-//     item: pipe(
-//       resourceResponse.resource,
-//       O.fromNullable,
-//       O.chainNullableK(stripResourceProps)
-//     )
-//   };
-// };
-
 export default cosmosService;

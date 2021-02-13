@@ -1,5 +1,5 @@
 import { AzureFunction, HttpRequest, TypedContext } from "@azure/functions";
-import { getTodoAsync } from "../services/http-client/todo-api.service";
+import { getTodoAsync } from "../services/todos/todo-api.service";
 
 const httpTrigger: AzureFunction = async function (
   context: TypedContext<{ todoId: string }>,
