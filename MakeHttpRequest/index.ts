@@ -3,7 +3,7 @@ import { getTodoAsync } from "../services/todos/todo-api.service";
 
 const httpTrigger: AzureFunction = async function (
   context: TypedContext<{ todoId: string }>,
-  req: HttpRequest
+  _req: HttpRequest
 ): Promise<void> {
   const todo = await getTodoAsync(context.bindingData.todoId);
 

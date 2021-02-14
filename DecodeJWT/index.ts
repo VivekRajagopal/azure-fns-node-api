@@ -3,7 +3,7 @@ import { ValidateJwt } from "./validate-jwt.dto";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest,
+  _req: HttpRequest,
   decodedJwt: ValidateJwt
 ): Promise<void> {
   if (!decodedJwt.isValid) {
@@ -12,8 +12,6 @@ const httpTrigger: AzureFunction = async function (
       body: "Invalid Bearer Token"
     };
   } else {
-    console.log(decodedJwt);
-
     context.res = {
       status: 200,
       body: decodedJwt.token.payload,

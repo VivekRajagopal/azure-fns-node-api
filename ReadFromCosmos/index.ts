@@ -14,7 +14,7 @@ import {
 
 const httpTrigger: AzureFunction = async function (
   context: TypedContext<{ docId: string }>,
-  req: HttpRequest
+  _req: HttpRequest
 ): Promise<void> {
   const { docId } = context.bindingData;
 

@@ -11,8 +11,8 @@ Azure Functions is geared towards the `dotnet` ecosystem with languages like C# 
 1. Leverage [typescript](!https://www.typescriptlang.org/) as much as possible
 2. Request payload validation
 3. Connect to a Cosmos service and
-   a. Create documents
-   b. Read documents
+   a. Read documents
+   b. Create documents
 4. Emulating "Startup" logic (i.e. registering singleton services)
 5. Create a custom binding
 6. Unit tests
@@ -33,4 +33,4 @@ Additionally, some great open source libraries are used to improve developer exp
 
 1. `fp-ts` - brings functional programming paradigms to Typescript. It is primarily used for the Option and Either and describing business logic by composing smaller functions.
 2. `io-ts` - compose your types as a set of rules that you can test on JS objects. This is primarily used for validating request payloads.
-3. `wretch` - define APIs very easily using base rules that you can extend for specific API endpoints. This is a functional wrapper around the `fetch` API using fluent syntax.
+3. `wretch` - This library is a wrapper around the `fetch` API. It provides a fluent interface to help easily build base API rules, and specific rules for each API endpoint.
