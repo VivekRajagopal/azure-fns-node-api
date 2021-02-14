@@ -36,11 +36,11 @@ namespace CustomExtensions {
 
         private TokenValidationResult BuildItemFromAttr(ValidateJwtAttribute attribute) {
             var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
-            var tokenValidationResult = ValidateTokenAsync(httpContextAccessor.HttpContext.Request.GetAuthBearerToken(), attribute.IdentityAuthorityUrl);
+            var tokenValidationResult = ValidateTokenAsync(httpContextAccessor.HttpContext.Request.GetAuthBearerToken(), attribute.BindingParam);
             return tokenValidationResult;
         }
 
-        private TokenValidationResult ValidateTokenAsync(string token, string identityAuthorityUrl) {
+        private TokenValidationResult ValidateTokenAsync(string token, string bindingParam) {
             if (string.IsNullOrWhiteSpace(token))
             {
                 return TokenValidationResult.Invalid();
@@ -48,7 +48,7 @@ namespace CustomExtensions {
 
             var tokenHandler = new JwtSecurityTokenHandler();
             try {
-                return TokenValidationResult.Valid(tokenHandler.ReadJwtToken(token));
+                return TokenValidationResult.Valid(tokenHandler.ReadJwtToken(token), bindingParam);
             } catch (Exception exception) {
                 return TokenValidationResult.Invalid();
             }

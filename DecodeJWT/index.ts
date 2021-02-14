@@ -12,13 +12,19 @@ const httpTrigger: AzureFunction = async function (
       body: "Invalid Bearer Token"
     };
   } else {
+    console.log(decodedJwt);
+
     context.res = {
       status: 200,
-      body: decodedJwt.token.payload
+      body: decodedJwt.token.payload,
+      headers: {
+        "x-custom-extensions-param": decodedJwt.bindingParam
+      }
     };
   }
 
   context.res.headers = {
+    ...context.res.headers,
     "content-type": "application/json"
   };
 };

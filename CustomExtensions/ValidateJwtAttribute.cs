@@ -7,6 +7,6 @@ namespace CustomExtensions
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
     public sealed class ValidateJwtAttribute: Attribute {
         [AutoResolve]
-        public string IdentityAuthorityUrl {get; set;}
+        public string BindingParam {get; set;}
     }
 }

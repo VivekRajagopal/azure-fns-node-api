@@ -13,7 +13,7 @@
       "type": "validateJwt",
       "direction": "in",
       "name": "customExtensionInput",
-      "identityAuthorityUrl": "%IdentityAuthorityUrl%"
+      "bindingParam": "%CustomAppSetting%"
     },
     {
       "type": "http",
